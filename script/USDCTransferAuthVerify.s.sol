@@ -24,7 +24,7 @@ contract USDCTransferAuthVerify is Script {
         uint256 value;
     }
 
-    function readTransferParams(string memory _json_path) view internal returns (transferWithAuthParams memory) {
+    function readTransferParams(string memory _json_path) internal view returns (transferWithAuthParams memory) {
         string memory json = vm.readFile(_json_path);
         bytes memory raw_params = json.parseRaw(".message");
         return abi.decode(raw_params, (transferWithAuthParams));
@@ -46,7 +46,9 @@ contract USDCTransferAuthVerify is Script {
 
         vm.deal(params.to, 1 ether);
         vm.startPrank(params.to);
-        token.transferWithAuthorization(params.from, params.to, params.value, params.validAfter, params.validBefore, params.nonce, v, r, s);
+        token.transferWithAuthorization(
+            params.from, params.to, params.value, params.validAfter, params.validBefore, params.nonce, v, r, s
+        );
         vm.stopPrank();
 
         console.log("Sig -> v:", v);
