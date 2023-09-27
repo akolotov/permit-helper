@@ -6,9 +6,8 @@ import "../lib/forge-std/src/Script.sol";
 import "./interfaces/IUSDCAuth.sol";
 import "./Env.s.sol";
 
-contract USDCTransferAuth is Script {
-    uint256 validAfter = block.timestamp;
-    uint256 validBefore = validAfter + deadline_threshold;
+contract USDCPermit is Script {
+    uint256 deadline = block.timestamp + deadline_threshold;
 
     using stdJson for string;
 
@@ -18,12 +17,8 @@ contract USDCTransferAuth is Script {
         token = IUSDCAuth(usdc_addr);
     }
 
-    function get_auth_nonce(bytes32 _salt) internal view returns (bytes32) {
-        return keccak256(abi.encode(block.number, _salt));
-    }
-
     function run() public {
-        bytes32 nonce = get_auth_nonce(keccak256(abi.encode(sender, recipient, value, validAfter, validBefore)));
+        uint256 nonce = token.nonces(sender);
 
         string memory domain_obj = "_domain";
         string memory domain = vm.serializeAddress(domain_obj, "verifyingContract", address(token));
@@ -32,12 +27,11 @@ contract USDCTransferAuth is Script {
         domain = vm.serializeString(domain_obj, "version", string.concat("\"", token.version(), "\""));
 
         string memory message_obj = "_message";
-        string memory message = vm.serializeAddress(message_obj, "from", sender);
-        message = vm.serializeAddress(message_obj, "to", recipient);
+        string memory message = vm.serializeAddress(message_obj, "owner", sender);
+        message = vm.serializeAddress(message_obj, "spender", recipient);
         message = vm.serializeUint(message_obj, "value", value);
-        message = vm.serializeUint(message_obj, "validAfter", validAfter);
-        message = vm.serializeUint(message_obj, "validBefore", validBefore);
-        message = vm.serializeBytes32(message_obj, "nonce", nonce);
+        message = vm.serializeUint(message_obj, "nonce", nonce);
+        message = vm.serializeUint(message_obj, "deadline", deadline);
 
         string memory template_json = vm.readFile(typed_data_file_template);
         string memory json = "_root";
@@ -46,10 +40,9 @@ contract USDCTransferAuth is Script {
         out = vm.serializeString(json, "message", message);
         vm.writeJson(out, typed_data_file);
 
-        console.log("From:", sender);
-        console.log("To:", recipient);
+        console.log("Owner:", sender);
+        console.log("Spender:", recipient);
         console.log("Value:", value);
-        console.log("Valid after:", validAfter);
-        console.log("Valid before:", validBefore);
+        console.log("Deadline:", vm.toString(deadline));
     }
 }

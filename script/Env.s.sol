@@ -14,3 +14,7 @@ uint256 constant value = 10_000_000;
 uint256 constant deadline_threshold = 1 days;
 
 string constant signature = "0x...";
+
+address constant actor = 0x95Ba4cF87D6723ad9C0Db21737D862bE80e93911;
+address constant polygon_bridge = 0xA0c68C638235ee32657e8f720a23ceC1bFc77C77;
+string constant bridge_metatx_signature = "0x...";

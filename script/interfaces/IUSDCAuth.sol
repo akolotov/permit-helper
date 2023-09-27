@@ -4,13 +4,15 @@ pragma solidity ^0.8.13;
 
 interface IUSDCAuth {
     function DOMAIN_SEPARATOR() external returns (bytes32);
-    function PERMIT_TYPEHASH() external returns (bytes32);
 
+    function PERMIT_TYPEHASH() external returns (bytes32);
     function TRANSFER_WITH_AUTHORIZATION_TYPEHASH() external returns (bytes32);
     function RECEIVE_WITH_AUTHORIZATION_TYPEHASH() external returns (bytes32);
 
     function name() external returns (string memory);
     function version() external returns (string memory);
+
+    function nonces(address owner) external returns (uint256);
 
     /**
      * @notice Execute a transfer with a signed authorization
