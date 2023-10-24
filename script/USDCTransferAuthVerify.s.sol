@@ -51,6 +51,7 @@ contract USDCTransferAuthVerify is Script {
         );
         vm.stopPrank();
 
+        console.log("****** transferWithAuthorization signature ******");
         console.log("Sig -> v:", v);
         console.log("Sig -> r:", vm.toString(r));
         console.log("Sig -> s:", vm.toString(s));
