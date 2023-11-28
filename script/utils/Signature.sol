@@ -15,8 +15,12 @@ library SignatureHelper {
         bytes32 s;
     }
 
+    function signatureStringToBytes(string memory _sig) public pure returns (bytes memory) {
+        return vm.parseBytes(_sig);
+    }
+
     function signatureStringToStruct(string memory _sig) public pure returns (sigVRS memory) {
-        bytes memory sig = vm.parseBytes(_sig);
+        bytes memory sig = signatureStringToBytes(_sig);
 
         bytes32 r;
         bytes32 s;

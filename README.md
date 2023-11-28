@@ -3,6 +3,7 @@
 This set of Foundry scripts helps to generate data for permit-family methods to transfer tokens gasless.
 
 Currently supported tokens:
+- Any token approved to be operated by Permit2, method `permitTransferFrom`, scripts `script/Permit2TransferFrom.s.sol` and `script/Permit2TransferFromVerify.s.sol`
 - USDC, method `transferWithAuthorization`, scripts `script/USDCTransferAuth.s.sol` and `script/USDCTransferAuthVerify.s.sol`
 - USDC, method `Permit`, scripts `script/USDCPermit.s.sol` and `script/USDCPermitVerify.s.sol`. The verification process uses Polygon bridge meta-transaction simulation which requires its own signature. The plan is to produce the signature by preparing typed data through `script/helpers/polygon/USDCMetaTransaction.s.sol` but due to [a bug in Foundry](https://github.com/foundry-rs/foundry/issues/5912) a workaround is used -- the privkey of the meta-transaction signer must be provided in `SIGNER` of `.env`
 - Tokens bridged through Gnosis OmniBridge, method `Permit`, scripts `script/GnosisBridgedTokensPermit.s.sol` and `script/GnosisBridgedTokensPermitVerify.s.sol`
