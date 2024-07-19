@@ -9,6 +9,12 @@ sed -e 's#"value": \([0-9]\{1,\}\)#"value": "\1"#' \
     -e 's#"amount": \([0-9]\{1,\}\)#"amount": "\1"#' \
     ${TYPED_DATA_FILE} > ${WORKING_TYPED_DATA_FILE}
 
+# To run on the host machine
+# ~/.foundry/bin/cast wallet sign \
+#     ${PRIV_KEY_SOURCE} \
+#     --data --from-file ${WORKING_TYPED_DATA_FILE}
+
+# To run within container
 cast wallet sign \
     ${PRIV_KEY_SOURCE} \
     --data --from-file ${WORKING_TYPED_DATA_FILE}
