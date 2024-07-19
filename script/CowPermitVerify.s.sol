@@ -8,7 +8,7 @@ import "./interfaces/ICowToken.sol";
 import "./utils/Signature.sol";
 import "./Env.s.sol";
 
-contract GnosisBridgedTokensPermitVerify is Script,StdCheats {
+contract CowPermitPermitVerify is Script,StdCheats {
     using stdJson for string;
 
     ICowToken token;
