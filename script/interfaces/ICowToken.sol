@@ -48,4 +48,6 @@ interface ICowToken {
     ) external;
 
     function transferFrom(address _from, address _to, uint256 _value) external returns (bool);
+
+    function allowance(address owner, address spender) external view returns (uint256);
 }
