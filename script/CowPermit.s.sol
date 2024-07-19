@@ -24,7 +24,7 @@ contract CowPermit is Script {
         string memory domain = vm.serializeAddress(domain_obj, "verifyingContract", address(token));
         domain = vm.serializeUint(domain_obj, "chainId", block.chainid);
         domain = vm.serializeString(domain_obj, "name", token.name());
-        domain = vm.serializeString(domain_obj, "version", string.concat("\"", "1", "\""));
+        domain = vm.serializeString(domain_obj, "version", "1");
 
         string memory message_obj = "_message";
         string memory message = vm.serializeAddress(message_obj, "owner", sender);
