@@ -38,7 +38,7 @@ library SignatureHelper {
         return sigVRS({v: _v, r: _r, s: _s});
     }
 
-    function outputSignature(sigVRS memory _sig) internal view {
+    function outputSignature(sigVRS memory _sig) internal pure {
         console.log("Sig -> v:", _sig.v);
         console.log("Sig -> r:", vm.toString(_sig.r));
         console.log("Sig -> s:", vm.toString(_sig.s));
