@@ -5,6 +5,7 @@ pragma solidity ^0.8.13;
 import "../lib/forge-std/src/Script.sol";
 import "./interfaces/IUSDCAuth.sol";
 import "./Env.s.sol";
+import "./utils/Signature.sol";
 
 contract USDCTransferAuthVerify is Script {
     using stdJson for string;
@@ -31,29 +32,18 @@ contract USDCTransferAuthVerify is Script {
     }
 
     function run() public {
-        bytes memory sig = vm.parseBytes(signature);
-
-        bytes32 r;
-        bytes32 s;
-        uint8 v;
-        assembly {
-            r := mload(add(sig, 32))
-            s := mload(add(sig, 64))
-            v := and(mload(add(sig, 65)), 255)
-        }
+        SignatureHelper.sigVRS memory sig = SignatureHelper.signatureStringToStruct(signature);
 
         transferWithAuthParams memory params = readTransferParams(typed_data_file);
 
         vm.deal(params.to, 1 ether);
         vm.startPrank(params.to);
         token.transferWithAuthorization(
-            params.from, params.to, params.value, params.validAfter, params.validBefore, params.nonce, v, r, s
+            params.from, params.to, params.value, params.validAfter, params.validBefore, params.nonce, sig.v, sig.r, sig.s
         );
         vm.stopPrank();
 
         console.log("****** transferWithAuthorization signature ******");
-        console.log("Sig -> v:", v);
-        console.log("Sig -> r:", vm.toString(r));
-        console.log("Sig -> s:", vm.toString(s));
+        SignatureHelper.outputSignature(sig);
     }
 }

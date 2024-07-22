@@ -29,7 +29,7 @@ contract USDCTransferAuth is Script {
         string memory domain = vm.serializeAddress(domain_obj, "verifyingContract", address(token));
         domain = vm.serializeUint(domain_obj, "chainId", block.chainid);
         domain = vm.serializeString(domain_obj, "name", token.name());
-        domain = vm.serializeString(domain_obj, "version", string.concat("\"", token.version(), "\""));
+        domain = vm.serializeString(domain_obj, "version", token.version());
 
         string memory message_obj = "_message";
         string memory message = vm.serializeAddress(message_obj, "from", sender);
